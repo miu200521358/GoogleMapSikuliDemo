@@ -1,0 +1,2 @@
+# GoogleMapSikuliDemo
+Sikuliを使ってGoogleMapのキャプチャその他を行うデモプログラムです。
