@@ -1,0 +1,244 @@
+
+<html>
+   <head>
+      <style type="text/css">
+         .sikuli-code {
+            font-size: 20px;
+            font-family: "Osaka-mono", Monospace;
+            line-height: 1.5em;
+            display:table-cell;
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+            width: 99%;   /* remove horizontal scroll-bar when viewing in IE7 */
+         }
+         .sikuli-code img {
+            vertical-align: middle;
+            margin: 2px;
+            border: 1px solid #ccc;
+            padding: 2px;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-box-shadow: 1px 1px 1px gray;
+            -webkit-box-shadow: 1px 1px 2px gray;
+         }
+         .kw {
+            color: blue;
+         }
+         .skw {
+            color: rgb(63, 127, 127);
+         }
+
+         .str {
+            color: rgb(128, 0, 0);
+         }
+
+         .dig {
+            color: rgb(128, 64, 0);
+         }
+
+         .cmt {
+            color: rgb(200, 0, 200);
+         }
+
+         h2 {
+            display: inline;
+            font-weight: normal;
+         }
+
+         .info {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+            display: none;
+         }
+
+         a {
+            color: #9D2900;
+         }
+
+         body {
+            font-family: "Trebuchet MS", Arial, Sans-Serif;
+         }
+
+      </style>
+   </head>
+<body>
+<div class="info">
+<h2>GMSDParams.sikuli</h2> <a href="GMSDParams.zip">(Download this script)</a>
+</div>
+<pre class="sikuli-code">
+<span class="cmt"># -*- coding: utf-8 -*-</span>
+
+<span class="kw">import</span> os
+<span class="kw">import</span> sys
+<span class="kw">import</span> datetime
+
+<span class="kw">from</span> xml.etree <span class="kw">import</span> ElementTree
+
+<span class="kw">import</span> GMSDLib
+reload(GMSDLib)
+<span class="kw">from</span> GMSDLib <span class="kw">import</span> *
+
+<span class="kw">class</span> ParamCls:
+
+    <span class="cmt"># 初期化処理</span>
+    <span class="kw">def</span> __init__(self, settingPath):
+        <span class="cmt"># OSチェック</span>
+        <span class="kw">if</span> Env.getOS() != OS.WINDOWS:
+            <span class="kw">print</span> <span class="str">u"利用可能OSはWindows7/10のみです OS:{0} version:{1}"</span>.format(Env.getOS(), Env.getOSVersion())
+            sys.exit()
+
+        <span class="cmt"># OSのバージョンチェック</span>
+        <span class="kw">if</span> <span class="str">"10"</span> <span class="kw">in</span> Env.getOSVersion():
+            self.osVersion = GMSDLib.WINDOWS_10
+        <span class="kw">elif</span> <span class="str">"6"</span> <span class="kw">in</span> Env.getOSVersion():
+            self.osVersion = GMSDLib.WINDOWS_7
+        <span class="kw">else</span>:
+            <span class="kw">print</span> <span class="str">u"利用可能OSはWindows7/10のみです OS:{0} version:{1}"</span>.format(Env.getOS(), Env.getOSVersion())
+            sys.exit()
+
+
+
+        <span class="cmt">#パスは絶対パスに変換して保存しておく</span>
+        <span class="cmt"># xmlPath: 設定XMLのフルパス</span>
+        self.xmlPath = os.path.abspath(settingPath)
+        <span class="cmt">#ElementTreeに変換する</span>
+        <span class="cmt"># tree: 設定XMLのTree構造変換オブジェクト</span>
+        self.tree = ElementTree.parse(self.xmlPath)
+
+        <span class="cmt">#フォルダ初期設定</span>
+        initFolder(self.tree.findtext(<span class="str">u'.//log/path'</span>))
+        initFolder(self.tree.findtext(<span class="str">u'.//capture/path'</span>))
+        initFolder(self.tree.findtext(<span class="str">u'.//excel/path'</span>))
+
+        <span class="cmt">### ログファイルの設定</span>
+        <span class="cmt">#設定からログファイルの出力先を取得する</span>
+        logDirPath = self.tree.findtext(<span class="str">u'.//log/path'</span>)
+        <span class="cmt">#本日日時を取得する</span>
+        today = datetime.datetime.today().strftime(<span class="str">"%Y%m%d-%H%M%S"</span>)
+        <span class="cmt">#ログファイルの出力を設定する</span>
+        logPath = <span class="str">u"{0}/GMSD{1}.log"</span>.format(logDirPath, today)
+        Debug.setUserLogFile(logPath)
+
+        <span class="cmt">#ログファイルパス出力</span>
+        GMSDLib.logger(<span class="str">u"ログファイル設定完了: {0}"</span>.format(logPath))
+
+        <span class="cmt">#OSバージョンによってUIイメージの切り替え</span>
+        <span class="kw">if</span> self.osVersion == GMSDLib.WINDOWS_7:
+            self.browserImg = <img src="1497489516506.png" />
+        <span class="kw">elif</span> self.osVersion == GMSDLib.WINDOWS_10:
+            self.browserImg = <img src="browserImg.png" />
+
+        <span class="cmt">##### ブラウザ設定</span>
+        <span class="cmt"># browserApp: ブラウザのアプリオブジェクト。フォーカス切り替え等に使用</span>
+        <span class="cmt"># browserReg: ブラウザの表示範囲</span>
+        (self.browserApp, self.browserReg) = \
+                openFocusApp(self.tree.findtext(<span class="str">u'.//browser/name'</span>), self.tree.findtext(<span class="str">u'.//browser/exe'</span>), self.browserImg)
+
+        self.excelVersion = self.tree.findtext(<span class="str">u'.//excel/version'</span>)
+
+
+        <span class="cmt">#ExcelバージョンによってUIイメージの切り替え</span>
+        <span class="kw">if</span> self.excelVersion == GMSDLib.EXCEL_VERSION_2013:
+            self.excelImg = <img src="1497606359833.png" />
+        <span class="kw">elif</span> self.excelVersion == GMSDLib.EXCEL_VERSION_2010:
+            <span class="cmt">#日本語解析を行わず、画像で文字列判定を行う場合、</span>
+            <span class="cmt">#ヒット率を最大まであげておくと安全（画像での文字判定は結構いい加減）</span>
+            <span class="cmt">#ただし、OSの違い等で微妙に色が変わったりした時にもヒットしなくなるので善し悪し</span>
+            self.excelImg = Pattern(<img src="1497506745206.png" />).exact()
+        <span class="kw">elif</span> self.excelVersion == GMSDLib.EXCEL_VERSION_2003:
+            <span class="kw">if</span> self.osVersion == GMSDLib.WINDOWS_7:
+                self.excelImg = <img src="1497618740581.png" />
+            <span class="kw">elif</span> self.osVersion == GMSDLib.WINDOWS_10:
+                self.excelImg = <img src="excelImg.png" />
+        <span class="kw">else</span>:
+            GMSDLib.logger(<span class="str">u"Excelのバージョンが対応外です。 version: {0}"</span>.format(self.excelVersion))
+            sys.exit()
+
+        <span class="cmt">##### エクセル設定</span>
+        <span class="cmt"># excelApp: エクセルのアプリオブジェクト。フォーカス切り替え等に使用</span>
+        <span class="cmt"># excelReg: エクセルの表示範囲</span>
+        (self.excelApp, self.excelReg) = \
+                openFocusApp(self.tree.findtext(<span class="str">u'.//excel/name'</span>), self.tree.findtext(<span class="str">u'.//excel/exe'</span>), self.excelImg)
+
+
+        <span class="kw">if</span> self.excelVersion == GMSDLib.EXCEL_VERSION_2013:
+            <span class="cmt"># 空白のブックを作成する </span>
+            <span class="skw">click</span>(<img src="1497606359833.png" />)
+            <span class="cmt">#ブックを作成したので、Excelイメージ切り替え</span>
+            self.excelImg = <img src="1497620803566.png" />
+
+        <span class="kw">elif</span> self.excelVersion == GMSDLib.EXCEL_VERSION_2003:
+
+            <span class="cmt"># ブックが開いていない場合、新規作成</span>
+            <span class="kw">if</span> exists(<img src="1497615614192.png" />) == None:
+                <span class="skw">click</span>(<img src="1497611393972.png" />)
+
+<span class="cmt">###--------------------------</span>
+<span class="cmt"># 指定されたアプリを開き、フォーカスを取得する</span>
+<span class="cmt"># appName: アプリウィンドウ名</span>
+<span class="cmt"># appExe: アプリ起動フルパス</span>
+<span class="cmt"># appImg: アプリが起動した事を確認する画像</span>
+<span class="kw">def</span> openFocusApp(appName, appExe, appImg):
+
+    GMSDLib.logger(<span class="str">u"openFocusApp: {0}, {1}"</span>.format(appName, appExe))
+
+    <span class="cmt">#アプリをいったん閉じる</span>
+    App.close(appName)
+    <span class="skw">wait</span>(<span class="dig">2</span>)
+
+    <span class="cmt">#アプリを開く</span>
+    <span class="cmt">#この段階ではアプリ情報は保持しない</span>
+    App.open(appExe)
+
+    <span class="kw">try</span>:
+        <span class="cmt"># 最大30秒まで、指定された画像が表示され、起動が完了するまで待つ</span>
+        <span class="skw">wait</span>(appImg, <span class="dig">30</span>)
+    <span class="kw">except</span> FindFailed <span class="kw">as</span> e:
+        <span class="cmt"># 指定時間待っても画像が取得できなかった場合、検索失敗エラーが発生する</span>
+        logger(<span class="str">u"openFocusApp起動失敗 *** message:{0}"</span>.format(e.message))
+        sys.exit()
+    <span class="kw">except</span> Exception <span class="kw">as</span> e2:
+        <span class="cmt">#検索失敗以外はそのままエラーを投げる</span>
+        <span class="kw">raise</span> e2
+
+    <span class="cmt">#アプリ名をキーとして、アプリにフォーカスしてオブジェクトを保持する</span>
+    app = App.focus(appName)
+
+    GMSDLib.logger(<span class="str">u"app.hasWindow(): {0}"</span>.format(app.hasWindow()))
+    GMSDLib.logger(<span class="str">u"app.getPID(): {0}"</span>.format(app.getPID()))
+    GMSDLib.logger(<span class="str">u"app.getName(): {0}"</span>.format(app.getName()))
+
+    GMSDLib.logger(<span class="str">u"{0}: オープン成功"</span>.format(appName))
+
+    <span class="skw">wait</span>(<span class="dig">5</span>)
+
+    <span class="cmt">#最前面に出ているアプリの範囲を取得し、検索範囲を少しでも限定する</span>
+    <span class="cmt">#こうする事で多少なりとも処理が速くなる</span>
+    reg = Region(App.focusedWindow())
+
+    <span class="cmt">#アプリのタイムアウトを設定する</span>
+    <span class="cmt">#デフォルトは3秒待つので、動作がどうしても遅くなってしまう</span>
+    <span class="cmt">#あらかじめ短く設定しておき、必要に応じて待機時間を長くとればサクサク動く</span>
+    reg.setAutoWaitTimeout(<span class="dig">0.1</span>)
+
+    <span class="kw">return</span> (app, reg)
+
+<span class="cmt">###-------------</span>
+<span class="cmt"># フォルダの初期化を行う</span>
+<span class="cmt"># 存在チェックを行い、なければ生成する</span>
+<span class="cmt">#</span>
+<span class="kw">def</span> initFolder(path):
+    <span class="cmt">#フォルダが存在するか調べる</span>
+    <span class="kw">if</span> os.path.isdir(path) == False:
+        <span class="cmt"># loggerの初期化前なので、printのみ</span>
+        <span class="kw">print</span> <span class="str">u"フォルダ生成 path={0}"</span>.format(path)
+
+        <span class="cmt">#存在しなかった場合、作成する</span>
+        os.makedirs(path)
+</pre>
+</body>
+</html>

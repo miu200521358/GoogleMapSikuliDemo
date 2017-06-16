@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<demo>
+	<target>
+		<!-- ■修正対象■ -->
+		<!-- Google Mapで検索するランドマーク -->
+		<!-- 複数指定可能ですが、重複しないようにしてください -->
+		<name>東京タワー</name>
+		<name>京都タワー</name>
+	</target>
+	<os>
+        <!-- Windowsのバージョン 7/10のいずれか -->
+        <version>10</version>
+    </os>
+	<browser>
+		<!-- ■修正対象■ -->
+		<!-- Google Chromeのexeフルパス -->
+		<!-- パス区切り文字はバックスラッシュ -->
+		<!-- パスに空白を含む場合、ダブルクォーテーションで囲む事 -->
+		<exe>"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe"</exe>
+		<!-- Google Chrome のウインドウ名(変更不可) -->
+		<name>chrome</name>
+		<!-- Google Map のURL(変更不可) -->
+		<mapurl>https://www.google.co.jp/maps?force=lite&amp;hl=ja</mapurl>
+	</browser>
+	<log>
+		<!-- ■修正対象■ -->
+		<!-- ログファイルの出力先フルパス -->
+		<path>D:\Development\Sikuli\Script\GoogleMapSikuliDemo\output\logs</path>
+	</log>
+	<capture>
+		<!-- ■修正対象■ -->
+		<!-- キャプチャ画像の出力先フルパス -->
+		<path>D:\Development\Sikuli\Script\GoogleMapSikuliDemo\output\capture</path>
+	</capture>
+	<excel>
+		<!-- ■修正対象■ -->
+        <!-- Excelのフルパスをexeタグで設定 -->
+		<!-- Excel2003のフルパス(参考) -->
+		<exe>"C:\Program Files (x86)\Microsoft Office\OFFICE11\EXCEL.EXE"</exe>
+		<!-- Excel2010のフルパス(参考) -->
+		<!-- <exe>"C:\Program Files\Microsoft Office\Office14\EXCEL.EXE"</exe> -->
+		<!-- Excel2013のフルパス(参考) -->
+		<!-- <exe>"C:\Program Files\Microsoft Office 15\root\office15\EXCEL.EXE"</exe> -->
+		<!-- ■修正対象■ -->
+		<!-- エクセルのバージョン 2003/2010/2013 のいずれか -->
+		<version>2003</version>
+		<!-- ■修正対象■ -->
+		<!-- エクセルデータの出力先フルパス -->
+		<path>D:\Development\Sikuli\Script\GoogleMapSikuliDemo\output\excel</path>
+		<!-- エクセル のウインドウ名(変更不可) -->
+		<name>excel</name>
+	</excel>
+</demo>
