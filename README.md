@@ -11,19 +11,14 @@ Sikuliを使ってGoogleMapのキャプチャその他を行うデモプログ�
 画像認識(OpenCV)を利用したGUI自動操作ツールです。
 モニタ上でマウスカーソルやキーボードを用いて画面を自動的に操作することが可能です。
 
-http://www.sikuli.org/
-http://doc.sikuli.org/
+- http://www.sikuli.org/
+- http://doc.sikuli.org/
 
 
-[test][automation] sikuliを使ってGUI操作を自動化する
-
-http://qiita.com/YHayama@github/items/483198cba0e7c4baa78c
-
-Sikuliを使ってUIの操作を自動化
-
-http://www.urong-answer.org/2015/02/automate-ui-operation-using-sikuli/
-
-
+- [test][automation] sikuliを使ってGUI操作を自動化する
+  - http://qiita.com/YHayama@github/items/483198cba0e7c4baa78c
+- Sikuliを使ってUIの操作を自動化
+  - http://www.urong-answer.org/2015/02/automate-ui-operation-using-sikuli/
 
 ## 1. 実行環境
 
@@ -46,6 +41,7 @@ http://www.urong-answer.org/2015/02/automate-ui-operation-using-sikuli/
 ## 2. デモの流れ
 
 デモ動画: 
+
 https://youtu.be/506WM-ADnJs
 
 具体的には以下のような動作を行います。
@@ -68,6 +64,7 @@ Javaインストール後、公式からSikuliをインストールしてくだ�
 
 
 参考) インストール手順
+
 http://qiita.com/YHayama@github/items/483198cba0e7c4baa78c
 
 
@@ -82,9 +79,15 @@ http://qiita.com/YHayama@github/items/483198cba0e7c4baa78c
 
 すべて完了いたしましたら、demo.batを実行してください。
 
+## 5. 解説
 
+Sikuliデモプログラムを作ってみた(準備編)
 
-## 5. 免責事項他
+http://qiita.com/miz21358/items/d301297dcb9d925172f6
+
+上記に他説明リンクもあり
+
+## 6. 免責事項他
 
 本デモプログラムは、本readmeにある通り動作することを期待し、
 また、その通りに動作し皆様のお役に立つことを意図して作成しておりますが、
