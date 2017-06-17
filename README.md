@@ -16,9 +16,11 @@ http://doc.sikuli.org/
 
 
 [test][automation] sikuliを使ってGUI操作を自動化する
+
 http://qiita.com/YHayama@github/items/483198cba0e7c4baa78c
 
 Sikuliを使ってUIの操作を自動化
+
 http://www.urong-answer.org/2015/02/automate-ui-operation-using-sikuli/
 
 
