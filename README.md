@@ -44,6 +44,7 @@ http://www.urong-answer.org/2015/02/automate-ui-operation-using-sikuli/
 ## 2. デモの流れ
 
 デモ動画: 
+https://youtu.be/506WM-ADnJs
 
 具体的には以下のような動作を行います。
 - Chrome を開く
